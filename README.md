@@ -11,10 +11,12 @@ npm install image-transformation-directive
 ## Setup
 
 ```ts
-import { transformationDirective } from "image-transformation-directive";
+import { transformationDirective, ImgixProvider } from "image-transformation-directive";
+
+const provider = new ImgixProvider({ ... });
 
 const { transformationDirectiveTypeDefs, transformationDirectiveTransformer } =
-  transformationDirective("transformation");
+  transformationDirective({ directiveName: "transformation", provider });
 
 const schema = makeExecutableSchema({
   typeDefs: [
@@ -40,7 +42,7 @@ const schema = makeExecutableSchema({
 });
 
 schema = transformationDirectiveTransformer(schema);
-``
+```
 
 ## Usage
 
