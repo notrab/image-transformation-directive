@@ -12,6 +12,7 @@ npm install image-transformation-directive
 
 ```ts
 import { transformationDirective, ImgixProvider } from "image-transformation-directive";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
 const provider = new ImgixProvider({ ... });
 
@@ -41,7 +42,7 @@ const schema = makeExecutableSchema({
   },
 });
 
-schema = transformationDirectiveTransformer(schema);
+const transformedSchema = transformationDirectiveTransformer(schema);
 ```
 
 ## Usage
