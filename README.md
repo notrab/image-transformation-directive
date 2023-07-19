@@ -5,7 +5,7 @@ This directive enables you to add a transformation API to any field that returns
 ## Install
 
 ```bash
-npm install image-transformation-directive
+npm install image-transformation-directive # NOT ACTUALLY A THING, YET!
 ```
 
 ## Setup
@@ -17,7 +17,7 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 const provider = new ImgixProvider({ ... });
 
 const { transformationDirectiveTypeDefs, transformationDirectiveTransformer } =
-  transformationDirective({ directiveName: "transformation", provider });
+  transformationDirective({ provider });
 
 const schema = makeExecutableSchema({
   typeDefs: [
@@ -36,7 +36,7 @@ const schema = makeExecutableSchema({
     Query: {
       cart: (_, { id }) => ({
         id,
-        image: "photo.png",
+        image: "https://media.cms.com/photo123.png",
       }),
     },
   },
@@ -53,12 +53,32 @@ Now queries that fetch the `image` field for the `cart` query can contain argume
 {
   cart(id: "wtf") {
     id
-    image(width: 500, height: 600)
+    image(width: 300, height: 300)
   }
 }
 ```
 
-## Adapters
+## Adapters
 
-* Imgix (WIP)
-* Cloudinary (WIP)
+Each adapter should follow a similar pattern to:
+
+```ts
+class ImageTransformationAdapter {
+  transform(imageUrl, options) {
+    // Implement image transformation logic specific to the adapter
+    // and return the transformed image URL
+    return `${imageUrl}?w=${options.width}&h=${options.height}`;
+  }
+}
+```
+
+### ImgixAdapter
+
+```ts
+class ImgixAdapter extends ImageTransformationAdapter {
+  transform(imageUrl, options) {
+    // Implement image transformation logic using Imgix service
+    // and return the transformed image URL
+  }
+}
+```
